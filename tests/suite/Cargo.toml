@@ -1,0 +1,17 @@
+[package]
+name = "cxx-enumext-test-suite"
+version = "0.0.0"
+edition.workspace = true
+categories.workspace = true
+keywords.workspace = true
+license.workspace = true
+
+[lib]
+path = "lib.rs"
+
+[dependencies]
+cxx.workspace = true
+cxx-enumext = { path = "../.." }
+
+[build-dependencies]
+cxx-build.workspace = true
