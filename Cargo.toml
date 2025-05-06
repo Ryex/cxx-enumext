@@ -18,7 +18,7 @@ quote = "1.0.40"
 
 [package]
 name = "cxx-enumext"
-description = "Generate cxx compatable `Trivial` bindings for Usefull rust types"
+description = "Generate cxx compatable `Trivial` bindings for rust enum types"
 version .workspace = true
 edition .workspace = true
 categories .workspace = true

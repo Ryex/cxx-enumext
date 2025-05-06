@@ -1,6 +1,6 @@
 [package]
 name = "cxx-enumext-macro"
-description = "Implementation detail of the `cxx-exttypes` crate."
+description = "Implementation detail of the `cxx-enumext` crate."
 version .workspace = true
 edition .workspace = true
 categories .workspace = true
