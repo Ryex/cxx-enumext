@@ -97,6 +97,4 @@ jobs:
       - name: Run tests
         run: |
           cargo test
-      # - name: Run doctests
-      #   run: |
-      #     cargo test --doc
+

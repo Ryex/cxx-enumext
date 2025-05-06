@@ -26,6 +26,9 @@ keywords .workspace = true
 license .workspace = true
 links = "cxx-enumext"
 
+[lib]
+doctest = false
+
 [dependencies]
 cxx.workspace = true
 cxx-enumext-macro = { path = "./macro" }
