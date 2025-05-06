@@ -137,8 +137,8 @@ pub mod ffi {
 This will generate the `cxx::ExternType` impl as well as some non-exhaustive
 static assertions to check that contained types are at least externable.
 
-for `Optional` and `Expected` types some `std::convert::From<T>` impls will be cenerated
-to convert from and to `Option` and `Result` types
+For `Optional` and `Expected` types some `std::convert::From<T>` impls will be generated
+to convert from and to `Option` and `Result` types.
 
 Now, in your C++ file, make sure to `#include` the right headers:
 

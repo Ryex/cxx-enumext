@@ -1,7 +1,6 @@
 use cxx_build::CFG;
 
 fn main() {
-
     CFG.include_prefix = "tests/suite";
     let sources = vec!["lib.rs", "data.rs"];
     let mut build = cxx_build::bridges(sources);

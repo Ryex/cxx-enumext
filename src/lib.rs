@@ -23,7 +23,7 @@
 //!
 //! `rust::enum::expected` is a derivation from `rust::enm::variant` which provides the interface of
 //! `std::expected`
-//! 
+//!
 //! ## Quick tutorial
 //!
 //! To use `cxx-enumext`, first start by adding `cxx` to your project. Then add the following to your
@@ -478,7 +478,7 @@
 //! template <class T, class U>
 //! inline constexpr bool operator<(const optional<T> &lhs,
 //!                                 const optional<U> &rhs)
-//! // ... and many more compare operators 
+//! // ... and many more compare operators
 //! ```
 //!
 //! ### `rust::enm::expected`
