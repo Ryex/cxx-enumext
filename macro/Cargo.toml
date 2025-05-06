@@ -1,11 +1,12 @@
 [package]
 name = "cxx-enumext-macro"
 description = "Implementation detail of the `cxx-enumext` crate."
-version .workspace = true
-edition .workspace = true
-categories .workspace = true
-keywords .workspace = true
-license .workspace = true
+version.workspace = true
+edition.workspace = true
+categories.workspace = true
+keywords.workspace = true
+license.workspace = true
+repository.workspace= true
 
 [lib]
 proc-macro = true

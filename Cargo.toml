@@ -8,6 +8,7 @@ edition = "2021"
 categories = ["development-tools::ffi"]
 keywords = ["ffi"]
 license = "MIT OR Apache-2.0"
+repository = "https://github.com/Ryex/cxx-enumext"
 
 [workspace.dependencies]
 cxx = "1.0.158"
@@ -19,11 +20,12 @@ quote = "1.0.40"
 [package]
 name = "cxx-enumext"
 description = "Generate cxx compatable `Trivial` bindings for rust enum types"
-version .workspace = true
-edition .workspace = true
-categories .workspace = true
-keywords .workspace = true
-license .workspace = true
+version.workspace = true
+edition.workspace = true
+categories.workspace = true
+keywords.workspace = true
+license.workspace = true
+repository.workspace= true
 links = "cxx-enumext"
 
 [lib]
@@ -31,7 +33,7 @@ doctest = false
 
 [dependencies]
 cxx.workspace = true
-cxx-enumext-macro = { path = "./macro" }
+cxx-enumext-macro = { path = "./macro", version = "0.0.1" }
 
 [build-dependencies]
 cxx-build.workspace = true
