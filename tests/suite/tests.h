@@ -12,17 +12,6 @@ struct SharedData;
 using SharedDataRef = std::reference_wrapper<SharedData>;
 using RustValueRef = std::reference_wrapper<RustValue>;
 
-// CXX_DEFINE_VARIANT(RustEnum,
-//                    (UNIT(Empty), TYPE(Num, int64_t), TYPE(String,
-//                    rust::string),
-//                     TYPE(Bool, bool), TYPE(Shared, SharedData),
-//                     TYPE(SharedRef, std::reference_wrapper<SharedData>),
-//                     TYPE(Opaque, rust::box<RustValue>),
-//                     TYPE(OpaqueRef, std::reference_wrapper<RustValue>),
-//                     TUPLE(Tuple, int32_t, int32_t),
-//                     STRUCT(Struct, int32_t val; rust::string str;),
-//                     UNIT(Unit1), UNIT(Unit2)), )
-
 CXX_DEFINE_VARIANT(
     RustEnum,
     (UNIT(Empty) /*(Alias name)*/, TYPE(Num, int64_t) /*(Alias name, type)*/,

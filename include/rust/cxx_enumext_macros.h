@@ -25,7 +25,8 @@
 #define CXX_EVAL(...) CXX_EVAL1(CXX_EVAL1(CXX_EVAL1(__VA_ARGS__)))
 #define CXX_EVAL1(...) CXX_EVAL2(CXX_EVAL2(CXX_EVAL2(__VA_ARGS__)))
 #define CXX_EVAL2(...) CXX_EVAL3(CXX_EVAL3(CXX_EVAL3(__VA_ARGS__)))
-#define CXX_EVAL3(...) __VA_ARGS__
+#define CXX_EVAL3(...) CXX_EVAL4(CXX_EVAL4(CXX_EVAL4(__VA_ARGS__)))
+#define CXX_EVAL4(...) __VA_ARGS__
 
 #define CXX_GET_ARG_22(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, \
                        a14, a15, a17, a18, a19, a20, a21, a22, n, ...)         \
