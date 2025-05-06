@@ -39,10 +39,12 @@ fn main() {
 
     let no_bridges: Vec<PathBuf> = vec![];
     cxx_build::bridges(no_bridges)
+        .std("c++17")
         .warnings(false)
         .cargo_warnings(false)
         .files(&vec!["src/cxx_enumext.cpp"])
         .flag_if_supported("-std=c++17")
+        .flag_if_supported("/std:c++17")
         .include("include")
         .compile("cxx-enumext");
 }

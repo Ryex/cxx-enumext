@@ -1,5 +1,20 @@
 # `cxx_enumext`
 
+[![Crates.io][crates-badge]][crates-url]
+[![Documentation][docs-badge]][docs-url]
+[![MIT licensed][mit-badge]][mit-url]
+[![Build Status][actions-badge]][actions-url]
+
+[crates-badge]: https://img.shields.io/crates/v/cxx-enumext.svg
+[crates-url]: https://crates.io/crates/cxx-enumext
+[docs-badge]: https://docs.rs/cxx-enumext/badge.svg
+[docs-url]: https://docs.rs/cxx-enumext
+[docs-master-badge]: https://img.shields.io/badge/docs-master-blue
+[mit-badge]: https://img.shields.io/badge/license-MIT-blue.svg
+[mit-url]: LICENSE
+[actions-badge]: https://github.com/Ryex/cxx-enumext/workflows/CI/badge.svg
+[actions-url]: https://github.com/Ryex/cxx-enumext/actions?query=workflow%3ACI
+
 ## Overview
 
 `cxx-enumext` is a Rust crate that extends the [`cxx`](http://cxx.rs/) library to provide  

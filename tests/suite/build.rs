@@ -6,6 +6,8 @@ fn main() {
     let mut build = cxx_build::bridges(sources);
     build.file("tests.cpp");
     build.std("c++17");
+    build.flag_if_supported("-std=c++17");
+    build.flag_if_supported("/std:c++17");
     build.compile("cxx-enum-ext-test-suite");
 
     println!("cargo:rerun-if-changed=tests.cpp");
