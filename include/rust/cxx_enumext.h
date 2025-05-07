@@ -33,6 +33,7 @@
 #include <optional>
 #include <stdexcept>
 #include <string>
+#include <type_traits>
 #include <utility>
 
 // If you're using enums and variants on windows, you need to pass also
@@ -946,6 +947,7 @@ template <typename T, typename E> struct expected : public variant<T, E> {
   using base = variant<T, E>;
 
   expected() = delete;
+
   expected(const expected &) = default;
   expected(expected &&) = delete;
 
@@ -1044,12 +1046,18 @@ template <typename T, typename E> struct expected : public variant<T, E> {
                        : result(error());
   }
 
-  template <class F> constexpr T &or_else(F &&f) & {
-    return has_value() ? *this : std::forward<F>(f)();
+  template <class F> constexpr auto &or_else(F &&f) & {
+    using result =
+        expected<std::remove_cv_t<std::invoke_result_t<F, decltype(error())>>,
+                 E>;
+    return has_value() ? *this : std::invoke(std::forward<F>(f), error());
   }
 
-  template <class F> constexpr const T &or_else(F &&f) const & {
-    return has_value() ? *this : std::forward<F>(f)();
+  template <class F> constexpr const auto &or_else(F &&f) const & {
+    using result =
+        expected<std::remove_cv_t<std::invoke_result_t<F, decltype(error())>>,
+                 E>;
+    return has_value() ? *this : std::invoke(std::forward<F>(f), error());
   }
 
   template <class F> constexpr auto transform_error(F &&f) & {
@@ -1061,6 +1069,112 @@ template <typename T, typename E> struct expected : public variant<T, E> {
   template <class F> constexpr auto transform_error(F &&f) const & {
     using result =
         expected<std::remove_cv_t<std::invoke_result_t<F, const T &>>, E>;
+    return has_value() ? result(*this)
+                       : std::invoke(std::forward<F>(f), error());
+  }
+
+  using IsRelocatable = ::std::true_type;
+};
+
+template <typename E> struct expected<void, E> : public variant<monostate, E> {
+  using base = variant<monostate, E>;
+
+  expected() : base(monostate{}) {};
+  expected(const expected &) = default;
+  expected(expected &&) = delete;
+
+  using base::base;
+  using base::operator=;
+
+  using Ok = monostate;
+  using Err = E;
+
+  constexpr explicit operator bool() { return this->m_Index == 0; }
+  constexpr bool has_value() const noexcept { return this->m_Index == 0; }
+
+  /// @brief returns the expected value
+  ///
+  /// @throws bad_rust_expected_access<E> with a copy of the unexpected value
+  constexpr void value() & {
+    if (has_value()) {
+      return;
+    } else {
+      throw bad_rust_expected_access(*reinterpret_cast<E *>(this->m_Buff));
+    }
+  }
+
+  /// @brief returns the unexpected value
+  ///
+  /// if has_value() is `true`, the behavior is undefined
+  constexpr E &error() & { return *reinterpret_cast<E *>(this->m_Buff); }
+
+  /// @brief returns the unexpected value
+  ///
+  /// if has_value() is `true`, the behavior is undefined
+  constexpr const E &error() const & {
+    return *reinterpret_cast<const E *>(this->m_Buff);
+  }
+
+  constexpr void operator*() const noexcept {}
+
+  /// @brief Returns the unexpected value if it exists, otherwise returns
+  /// `default_value`
+  template <class G = E> constexpr E error_or(G &&default_value) const & {
+    return has_value() ? std::forward<G>(default_value) : error();
+  }
+
+  template <class F> constexpr auto and_then(F &&f) & {
+    using result = std::invoke_result_t<F>;
+    static_assert(detail::is_rust_expected<result>::value,
+                  "F must return a rust::variant::expected");
+    return (has_value()) ? std::invoke(std::forward<F>(f)) : result(error());
+  }
+
+  template <class F> constexpr auto and_then(F &&f) const & {
+    using result = std::invoke_result_t<F>;
+    static_assert(detail::is_rust_expected<result>::value,
+                  "F must return a rust::variant::expected");
+    return (has_value()) ? std::invoke(std::forward<F>(f)) : result(error());
+  }
+
+  template <class F> constexpr auto transform(F &&f) & {
+    using result = expected<std::remove_cv_t<std::invoke_result_t<F>>, E>;
+    return has_value() ? std::invoke(std::forward<F>(f)) : result(error());
+  }
+
+  template <class F> constexpr auto transform(F &&f) const & {
+    using result = expected<std::remove_cv_t<std::invoke_result_t<F>>, E>;
+    return has_value() ? std::invoke(std::forward<F>(f)) : result(error());
+  }
+
+  template <class F> constexpr auto &or_else(F &&f) & {
+    using result =
+        expected<std::remove_cv_t<std::invoke_result_t<F, decltype(error())>>,
+                 E>;
+    return has_value() ? result(*this)
+                       : std::invoke(std::forward<F>(f), error());
+  }
+
+  template <class F> constexpr const auto &or_else(F &&f) const & {
+    using result =
+        expected<std::remove_cv_t<std::invoke_result_t<F, decltype(error())>>,
+                 E>;
+    return has_value() ? result(*this)
+                       : std::invoke(std::forward<F>(f), error());
+  }
+
+  template <class F> constexpr auto transform_error(F &&f) & {
+    using result =
+        expected<std::remove_cv_t<std::invoke_result_t<F, decltype(error())>>,
+                 E>;
+    return has_value() ? result(*this)
+                       : std::invoke(std::forward<F>(f), error());
+  }
+
+  template <class F> constexpr auto transform_error(F &&f) const & {
+    using result =
+        expected<std::remove_cv_t<std::invoke_result_t<F, decltype(error())>>,
+                 E>;
     return has_value() ? result(*this)
                        : std::invoke(std::forward<F>(f), error());
   }

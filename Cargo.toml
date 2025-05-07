@@ -1,9 +1,9 @@
 [workspace]
 members = ["macro", "tests/suite"]
-resolver = "3"
+resolver = "2"
 
 [workspace.package]
-version = "0.0.1"
+version = "0.0.2"
 edition = "2021"
 categories = ["development-tools::ffi"]
 keywords = ["ffi"]
@@ -33,7 +33,7 @@ doctest = false
 
 [dependencies]
 cxx.workspace = true
-cxx-enumext-macro = { path = "./macro", version = "0.0.1" }
+cxx-enumext-macro = { path = "./macro", version = "0.0.2" }
 
 [build-dependencies]
 cxx-build.workspace = true

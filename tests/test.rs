@@ -1,6 +1,6 @@
 use cxx_enumext_test_suite::{
     ffi::{
-        make_enum, make_enum_opaque, make_enum_shared, make_enum_shared_ref, make_enum_str,
+        self, make_enum, make_enum_opaque, make_enum_shared, make_enum_shared_ref, make_enum_str,
         mul2_if_gt10, take_enum, take_mut_enum, take_optional,
     },
     OptionalI32, RustEnum, RustValue, SharedData,
@@ -104,4 +104,12 @@ fn test_get_expected_ffi() {
     let result: Result<_, _> = mul2_if_gt10(8).into();
     println!("result is: {result:?}");
     assert!(matches!(result, Err(s) if s == "value too small"));
+}
+
+#[test]
+fn test_expected_void_specialisation() {
+    assert_eq!(ffi::take_expected_void(Err(100).into()), 100);
+    assert_eq!(ffi::take_expected_void(Ok(()).into()), 1000);
+    assert!(matches!(ffi::make_expected_void().into(), Ok(())));
+    assert!(matches!(ffi::make_unexpected_void().into(), Err(42)));
 }

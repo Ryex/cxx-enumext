@@ -150,3 +150,16 @@ I32StringResult mul2_if_gt10(int32_t value) {
     return I32StringResult{rust::String("value too small")};
   }
 }
+
+int32_t take_expected_void(ExpectedVoidInt result) {
+  if (result.has_value())
+    return 1000;
+  return result.error();
+}
+
+ExpectedVoidInt make_expected_void() {
+  return ExpectedVoidInt();
+}
+ExpectedVoidInt make_unexpected_void() {
+  return ExpectedVoidInt(42);
+}

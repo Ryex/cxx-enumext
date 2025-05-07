@@ -12,41 +12,52 @@ struct SharedData;
 using SharedDataRef = std::reference_wrapper<SharedData>;
 using RustValueRef = std::reference_wrapper<RustValue>;
 
+// clang_format off
 CXX_DEFINE_VARIANT(
     RustEnum,
-    (UNIT(Empty) /*(Alias name)*/, TYPE(Num, int64_t) /*(Alias name, type)*/,
-     TYPE(String, rust::string) /*by value rust type*/,
-     TYPE(Bool, bool) /*primative type*/,
-     TYPE(Shared, SharedData) /*shared type*/,
-     TYPE(
-         SharedRef,
-         std::reference_wrapper<SharedData>) /* if your using a refrence wrap is
-                                                in a `std::reference_wrapper`*/
-     ,
-     TYPE(Opaque, rust::box<RustValue>) /* boxed opaque rust type*/,
-     TYPE(OpaqueRef,
-          std::reference_wrapper<RustValue>) /*refren to opaque rust type*/,
-     TUPLE(Tuple, int32_t, int32_t) /*(Alias name, [list, of, types]) => struct
-                                       aliast_t{ T1 _0; T2 _1; ...};*/
-     ,
-     STRUCT(Struct, int32_t val;
-            rust::string str;) /*(Alias name, body of struct for members) struct
-                                  alist_t{body}; */
-     ,
-     UNIT(Unit1) /*More the one unit type supported, each is just a `struct
-                    alias_t {};`*/
-     ,
-     UNIT(Unit2) /*NO TRAILING COMMA*/
+    (
+      UNIT(Empty) /*(Alias name)*/,
+      TYPE(Num, int64_t) /*(Alias name, type)*/,
+      TYPE(String, rust::string) /*by value rust type*/,
+      TYPE(Bool, bool) /*primative type*/,
+      TYPE(Shared, SharedData) /*shared type*/,
+      TYPE(
+          SharedRef,
+          std::reference_wrapper<SharedData>
+      ) /* if your using a refrence wrap is in a `std::reference_wrapper`*/
+      ,
+      TYPE(Opaque, rust::box<RustValue>) /* boxed opaque rust type*/,
+      TYPE(
+        OpaqueRef,
+        std::reference_wrapper<RustValue>
+      ) /*refren to opaque rust type*/,
+      TUPLE(Tuple, int32_t, int32_t) /*(Alias name, [list, of, types]) => struct
+                                        aliast_t{ T1 _0; T2 _1; ...};*/
+      ,
+      STRUCT(
+        Struct,
+        int32_t val;
+        rust::string str;
+      ) /*(Alias name, body of struct for members) struct
+                                    alist_t{body}; */
+      ,
+      UNIT(Unit1) /*More the one unit type supported, each is just a `struct
+                      alias_t {};`*/
+      ,
+      UNIT(Unit2) /*NO TRAILING COMMA*/
      ),
     /* optional section injected into the type body (for declareing member
        function etc.) */
     /* DO NOT DECLARE EXTRA MEMBER VARIABLES, THIS WILL MAKE THE TYPE HAVE */
     /* AN INCORRECT MEMORY LAYOUT */
 )
+// clang_format on
 
 CXX_DEFINE_OPTIONAL(OptionalInt32, int32_t)
 
 CXX_DEFINE_EXPECTED(I32StringResult, int32_t, rust::string)
+
+CXX_DEFINE_EXPECTED(ExpectedVoidInt, void, int32_t)
 
 template <class... Ts> struct overload : Ts... {
   using Ts::operator()...;
@@ -64,3 +75,7 @@ int32_t take_mut_enum(RustEnum &);
 
 bool take_optional(const OptionalInt32 &optional);
 I32StringResult mul2_if_gt10(int32_t value);
+
+int32_t take_expected_void(ExpectedVoidInt);
+ExpectedVoidInt make_expected_void();
+ExpectedVoidInt make_unexpected_void();

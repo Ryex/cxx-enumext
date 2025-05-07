@@ -28,6 +28,10 @@ pub type OptionalI32 = Optional<i32>;
 #[derive(Debug)]
 pub type I32StringResult = cxx_enumext::Expected<i32, String>;
 
+#[cxx_enumext::extern_type]
+#[derive(Debug)]
+pub type ExpectedVoidInt = cxx_enumext::Expected<(), i32>;
+
 #[cxx::bridge]
 pub mod ffi {
 
@@ -37,6 +41,7 @@ pub mod ffi {
         type RustEnum<'a> = super::RustEnum<'a>;
         type I32StringResult = super::I32StringResult;
         type OptionalInt32 = super::OptionalI32;
+        type ExpectedVoidInt = super::ExpectedVoidInt;
 
         pub fn make_enum<'a>() -> RustEnum<'a>;
         pub fn make_enum_str<'a>() -> RustEnum<'a>;
@@ -49,6 +54,9 @@ pub mod ffi {
         pub fn take_optional(optional: &OptionalInt32) -> bool;
         pub fn mul2_if_gt10(value: i32) -> I32StringResult;
 
+        pub fn take_expected_void(result: ExpectedVoidInt) -> i32;
+        pub fn make_expected_void() -> ExpectedVoidInt;
+        pub fn make_unexpected_void() -> ExpectedVoidInt;
     }
 
     extern "Rust" {
