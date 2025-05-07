@@ -1050,14 +1050,14 @@ template <typename T, typename E> struct expected : public variant<T, E> {
     using result =
         expected<std::remove_cv_t<std::invoke_result_t<F, decltype(error())>>,
                  E>;
-    return has_value() ? *this : std::invoke(std::forward<F>(f), error());
+    return has_value() ? result(*this) : std::invoke(std::forward<F>(f), error());
   }
 
   template <class F> constexpr const auto &or_else(F &&f) const & {
     using result =
         expected<std::remove_cv_t<std::invoke_result_t<F, decltype(error())>>,
                  E>;
-    return has_value() ? *this : std::invoke(std::forward<F>(f), error());
+    return has_value() ? result(*this) : std::invoke(std::forward<F>(f), error());
   }
 
   template <class F> constexpr auto transform_error(F &&f) & {
